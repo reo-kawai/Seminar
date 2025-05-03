@@ -161,6 +161,22 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
 }
 
 
+% マクロの定義 ----------------------------------------------------------------------------------------------------------------
+
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\ga}{\gamma}
+\newcommand{\Cbb}{\mathbb{C}}
+\newcommand{\de}{\delta}
+\newcommand{\ep}{\epsilon}
+\newcommand{\Hcal}{\mathcal{H}}
+\newcommand{\id}{\textrm{id}}
+\newcommand{\Lcal}{\mathcal{L}}
+\newcommand{\Nbb}{\mathbb{N}}
+\newcommand{\Rbb}{\mathbb{R}}
+\newcommand{\Zbb}{\mathbb{Z}}
+
+
 % ==============================================================
 
 \begin{document}
@@ -185,6 +201,12 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
 余剰次元への応用
 GHUシナリオにおいて，オービフォールドを余剰次元として採用することでCP対称性を破ることが可能．
 
+\section{基礎知識}
+
+\subsection{巡回群}
+
+\subsection{トーラス$T^2$}
+
 
 \section{余剰次元}
 
@@ -195,13 +217,16 @@ GHUシナリオにおいて，オービフォールドを余剰次元として�
 
 \section{具体例}
 
-\subsection{\texorpdfstring{$S^1/Z_2$}{S1/Z2}}
-最も簡単なオービフォールドの例である．
-ここで$Z_2$とは$S^1$を$xy$平面上の原点を中心とする半径$R$の円としたときに，
+\subsection{\texorpdfstring{$S^1/\Zbb_2$}{S1/Z2}}
+最も簡単な1次元のオービフォールドの例である．
+ここで$\Zbb_2$とは$S^1$を$xy$平面上の原点を中心とする半径$R$の円としたときに，
 $x$軸に対して対称に折り返すという離散的変換を表している．
-$Z_2$
+$\Zbb_2 = \{ 1, -1\}$，$1$：恒等写像，$-1$：対称な折り返し．
 
-\subsection{\texorpdfstring{$\mathbb{C}/\mathbb{Z}_N$オービフォールド}{C/ZNオービフォールド}}
+\subsection{\texorpdfstring{$\Cbb/\Zbb_N$}{C/ZN}}
+
+2次元の余剰次元として考えられるオービフォールドは，
+2つの余剰次元のどちらの方向にも円になっているトーラス$T^2$を$\Zbb_2, \Zbb_4$等で割ったものである．
 
 % CP violation
 オービフォールドは多様体をそれ自身のもつ離散対称性で割ったものとして定義される．
