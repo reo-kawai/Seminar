@@ -1,0 +1,258 @@
+\RequirePackage{plautopatch} % パッチを自動的に適用してくれる
+\documentclass[uplatex]{jsarticle}
+
+\usepackage[dvipdfmx]{graphicx}
+\usepackage[dvipsnames]{xcolor} % 色の名前を拡張（dvipsnamesでないとRoyalBlueとかが通らない）
+
+% #################### Package for math ###########################
+% # amsmath : for complex math eqs. e.g. align, gather, etc...    #
+% # amsssymb: math font for AMS(American Mathematical Society)    #
+% # amsthm  : theorem environment for AMS                         #
+% # mathtool: dcase etc...                                        #
+% # hyperref: hyperref                                            #
+% # cleveref: ref not only number but also "theorem","lemma"      #
+% # autonum : automatically put number only refered eq            #
+% # loading order of package is important                         #
+% #################################################################
+\usepackage{amsmath,amssymb,amsthm}% 数式関連のパッケージ
+\usepackage{mathtools}
+
+\setlength{\textwidth}{\fullwidth}  % 本文の幅(textwidth)を全体の幅(=ヘッダ部の幅)にそろえる
+\usepackage{bm,amsfonts,ascmac,latexsym,physics,tikz,color}
+
+\usepackage{tcolorbox}
+\usepackage{varwidth}
+\usepackage{pxrubrica}
+\usepackage{titlesec}
+\usepackage{tocloft}
+
+\usetikzlibrary{calc} % TikZのcalcライブラリを読み込む（TikZ描画の座標計算をサポート）
+\tcbuselibrary{raster,breakable,theorems,skins} % colorboxのライブラリを読み込む
+
+
+% ハイパーリンク
+\usepackage[
+dvipdfmx, % 日本語用ドライバを指定し日本語の文字列やリンクの処理を正しく行う
+%hypertexnames=false, % 参照リンクが正しく機能しない場合に使用するオプション（リンクの名前解決を無効化する）
+%setpagesize=false, % PDFページサイズ設定制御（特殊な場合に使用）
+%bookmarks=true, % 目次（ブックマーク）を埋め込むオプション（クリックすると該当ページにジャンプ）
+%bookmarksdepth=tocdepth, % 目次に表示する深さをtocdepthに従わせる
+%bookmarksnumbered=true, % 目次に番号を付けます。
+colorlinks=true, % ハイパーリンクされているテキストに色がつく（falseなら赤囲い）
+%pdftitle={},
+%pdfsubject={},
+%pdfauthor={},
+%pdfkeywords={} % 以上四つはPDFのプロパティ情報（PDFビューアで詳細情報として表示される）
+]{hyperref}
+\usepackage{pxjahyper} % PDFのしおり機能の日本語文字化けを防ぐ((u)pLaTeXのときのみかく)
+
+
+%定理等環境----------------------------------------------------------------------------------------------------------------
+
+% 定理環境のカウンター
+\newcounter{theorem}
+
+% 定理の番号を節ごとに整理（numberwithinはamsmath.styで定義されている）
+\numberwithin{theorem}{section}
+
+% 定理環境 root定義
+% #1 = タイトル, #2 = 定理環境名, #3 = フレームの色, #4 = 内部の色, #5 = タイトルの色
+\newenvironment{theorem}[5][]{
+    \refstepcounter{theorem}
+    \newtcolorbox{theobox}[1][]{
+        enhanced,frame empty,sharp corners=downhill,breakable=true, % interior empty,
+        coltitle = #5,
+        fonttitle = \bfseries,
+        colbacktitle = #3, %frameinnercolor, %\definecolor{frameinnercolor}{RGB}{49,44,44} % 元の色設定
+        colback = #4,
+        extras broken = {frame empty,interior empty},
+        borderline = {0.5mm}{0mm}{#3}, % 外枠の設定（枠の厚み、色）
+        top = 4mm, before skip = 3.5mm, % ボックス内の内容と他の要素との間隔を調整
+        attach boxed title to top left = {yshift=-3mm,xshift=3mm}, % タイトルをボックスの左上に配置
+        boxed title style = {boxrule=0pt,sharp corners=all},
+        varwidth boxed title, % タイトルの幅を内容に応じて調整
+        title = ##1, % # is number, #1 is title
+}
+
+\ifstrempty{#1}{% #1が空かどうかを判定（ifstremptyはetoolbox.styで定義．etoolbox.styはtcolorboxが読み込むので宣言不要）
+    \begin{theobox}[#2~\thetheorem]}
+        {\begin{theobox}[#2~\thetheorem：{#1}]}
+}{\end{theobox}}
+
+\newenvironment{defn}[1][]{
+    \begin{theorem}[#1]{定義}{OliveGreen}{ForestGreen!20!White}{white}
+}{\end{theorem}}
+
+\newenvironment{theo}[1][]{
+    \begin{theorem}[#1]{定理}{RoyalBlue}{RoyalBlue!10!White}{white}
+}{\end{theorem}}
+
+\newenvironment{prop}[1][]{
+    \begin{theorem}[#1]{命題}{RoyalBlue}{RoyalBlue!10!White}{white}
+}{\end{theorem}}
+
+\newenvironment{lem}[1][]{
+    \begin{theorem}[#1]{補題}{RoyalBlue}{RoyalBlue!10!White}{white}
+}{\end{theorem}}
+
+\newenvironment{rmk}[1][]{
+    \begin{theorem}[#1]{注意}{Yellow!40!Orange}{Yellow!20!White}{white}
+}{\end{theorem}}
+
+\newenvironment{tips}[1][]{
+    \begin{theorem}[#1]{Tips}{Yellow!40!Orange}{Yellow!20!White}{white}
+}{\end{theorem}}
+
+
+%例環境
+\newcounter{reibangou} %%カウンタの定義
+%\numberwithin{reibangou}{section}
+\newtcolorbox{rei}[1][]{
+    enhanced,breakable,
+    boxrule=0.5mm,
+    top=2pt,left=45pt,right=4pt,bottom=2pt, % 本文の配置
+    arc=0mm,
+    colframe=blue!30!gray,
+    boxrule=1pt,
+    underlay={\node[inner sep=1pt,blue!50!black,fill=blue!10!white]at ([xshift=25pt,yshift=-9pt]interior.north west) {\stepcounter{reibangou}\bfseries\gtfamily 例\thereibangou};},
+}
+
+
+%例題環境
+\newcounter{reidaibangou} %%カウンタの定義
+%\numberwithin{reidaibangou}{section}
+\newtcolorbox{reidai}[1][]{
+    enhanced,breakable,boxrule=0.5mm,
+    top=2pt,left=50pt,right=4pt,bottom=2pt,
+    arc=0mm,
+    colframe=blue!30!gray,
+    boxrule=1pt,
+    underlay={
+    \node[inner sep=1pt,blue!50!black,fill=blue!10!white]at ([xshift=30pt,yshift=-9pt]interior.north west) {\stepcounter{reidaibangou}\bfseries\gtfamily 例題\thereidaibangou};},
+    segmentation code={%
+    \draw[dashed] (segmentation.west)--(segmentation.east);
+    \node[inner sep=1pt,blue!50!black,fill=blue!10!white] at ([xshift=30pt,yshift=-8pt]segmentation.south west) {\bfseries\gtfamily 解};},
+    before upper={\setlength{\parindent}{1zw}},
+    before lower={\setlength{\parindent}{1zw}},
+}
+
+
+%問題環境
+\newcounter{mondaibangou}
+%\numberwithin{mondaibangou}{chapter}
+\newtcolorbox{mondai}[2][]{
+    enhanced,breakable,sharp corners,
+    colframe=blue!30!gray,
+    colbacktitle=blue!10!white,
+    coltitle=blue!50!black,
+    title={\stepcounter{mondaibangou}\bfseries\gtfamily 問題\themondaibangou\; #2},
+}
+
+\newtcolorbox{kaito}[1][]{
+    enhanced,breakable,empty,sharp corners,
+    left skip=0pt,left=5pt,
+    coltitle=white,
+    title={\bfseries\gtfamily 解答},
+    overlay={
+    \begin{tcbclipframe}
+        \fill[blue!30!gray] (title.south west)++(-0.1,0)--++(1.3,0)--++(0,1)--++(-1.3,0)--cycle;
+        \draw[blue!30!gray,line width=0.1cm](frame.north west)--(frame.south west);
+    \end{tcbclipframe}},
+}
+
+
+% ==============================================================
+
+\begin{document}
+
+\title{日置 場の量子論 I.7 to II.2}
+\author{川合玲央}
+
+\maketitle
+
+\section*{I.7 量子系の時間発展の記述}
+
+\subsection*{3. 相互作用表示（朝永--Dirac描像）}
+相互作用の寄与が小さく，自由状態にほとんど近いような場合の運動は\textbf{摂動（Perturbation）}計算で知ることができる．
+これに適した表示を導入しよう．
+
+時刻$t = t_0$において，Hamiltonianを
+\begin{equation}
+    H = H_0 + H_I
+\end{equation}
+と分ける．
+Schr\"{o}dinger描像では状態のみが（時刻$t = t_0$で量子化した量子状態$\ket{\Psi_0}$を用いて）
+\begin{equation}
+    \ket{\Psi(t)}_\text{S} = e^{-i H (t - t_0)} \ket{\Psi_0}
+\end{equation}
+のように時間発展を担い，Heisenberg描像では演算子のみが（時刻$t = t_0$で量子化した演算子$Q(t_0)$を用いて）
+\begin{equation}
+    Q_\text{H}(t) = e^{i H (t - t_0)} Q(t_0) e^{-i H (t - t_0)}
+\end{equation}
+と時間発展を担った．
+どちらで計算しても結果（確率振幅）は
+\begin{equation}
+    \mathcal{A}(\Psi_i \to \Psi_f)
+    = {}_\text{H}\bra{\Psi_f} \ket{\Psi_i}_\text{H}
+    = {}_\text{H}\bra{\Psi_f} \ket{\Psi_0}
+    = {}_\text{S}\bra{\Psi_f} e^{-i H (t_f - t_i)} \ket{\Psi_i}_\text{S}
+    = {}_\text{S}\bra{\Psi_f} e^{-i H (t_f - t_0)} \ket{\Psi_0}
+\end{equation}
+と普遍であった．
+もちろんこれは（量子化した時刻における状態$\ket{\Psi_0}$から時間発展した後の）
+始状態$\ket{\Psi_i}$から系が時間発展して終状態$\ket{\Psi_f}$となるときの確率振幅を表している．
+
+ただこれらの表示は$H$の中に相互作用項$H_I$が含まれる場合，上手い表示ではない．
+演算子の時間依存性は全Hamiltonianで決定されるため，これが
+そこで
+
+
+\begin{equation}
+    \begin{split}
+        \mathcal{A}_\text{T} (\Psi_i \to \Psi_f)
+        &= {}_\text{T}\bra{\Psi_f}\ket{\Psi(t_f)}_\text{T} \\
+        &= {}_\text{T}\bra{\Psi_f} e^{i H_0 (t_f - t_0)} e^{-i H (t_f - t_i)} e^{-i H (t_i - t_0)} \ket{\Psi_i}_\text{T} \\
+        &= {}_\text{T}\bra{\Psi_f} e^{-i H_I (t_f - t_i)} \ket{\Psi_i}_\text{T}
+    \end{split}
+\end{equation}
+
+\subsection*{三つの表示の比較}
+三つの法事における時間発展の記述について比較してみる．
+
+\section*{II.1 摂動論で計算する量}
+素粒子現象では主に散乱（scattering），衝突（collision）の過程と束縛状態（bound state）を取り扱う．
+I.6では$t \to \pm \infty$で相互作用が消えるという条件を仮定したが，
+束縛状態（定常でポテンシャルが消えないような状態）が絡むような場合はこれが許されないためより複雑になる．
+
+実験では，始状態として運動量が確定した粒子群を用意し，
+終状態においても運動量が確定した生成粒子を調べるのが一般的である．
+これを解析するには，運動方程式の解の完全系（展開に用いる状態）として運動量確定状態（平面波など）をとり，
+それからすべての状態を対応する生成演算子と真空$\ket{0}$を使って構成し，
+その時間発展と他状態への遷移確率振幅
+\begin{equation}
+    \mathcal{A}(\Psi_i \to \Psi_f)
+\end{equation}
+などを計算すればよい．
+
+\section*{散乱理論}
+ここでは散乱理論，特に散乱による状態の遷移を表すS(cattering)行列の理論についてに記述する．
+
+
+\section*{II.2 場の理論でのS行列}
+
+
+\section*{Field Theory of Weyl semimetal}
+Weyl cones are usually rotationally symmetric and their opening angles are equal.
+\begin{equation}
+    \partial_\mu J_5^\mu
+    = \frac{1}{16\pi^2} \epsilon^{\mu\nu\rho\lambda} F_{\mu\nu} F_{\rho\lambda}
+    + 2M \bar{\Psi}\gamma_5 \Psi.
+\end{equation} % よくわからん
+
+
+\begin{thebibliography}{99}
+\bibitem{a} 文献情報
+\bibitem{b} 文献情報
+\end{thebibliography}
+
+\end{document}
