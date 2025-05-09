@@ -161,55 +161,78 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
 }
 
 
+% マクロの定義 ----------------------------------------------------------------------------------------------------------------
+
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\ga}{\gamma}
+\newcommand{\Cbb}{\mathbb{C}}
+\newcommand{\de}{\delta}
+\newcommand{\ep}{\epsilon}
+\newcommand{\Hcal}{\mathcal{H}}
+\newcommand{\id}{\textrm{id}}
+\newcommand{\Lcal}{\mathcal{L}}
+\newcommand{\Nbb}{\mathbb{N}}
+\newcommand{\Rbb}{\mathbb{R}}
+\newcommand{\Zbb}{\mathbb{Z}}
+
+
 % ==============================================================
 
 \begin{document}
 
-\title{AAA}
+\title{オービフォールド}
 \author{川合玲央}
 
 \maketitle
 
 \tableofcontents
 
-\part{[1505.04772]}
-The holographic Weyl semi-metal
+\section{導入}
 
-\section{abstract}
-Varying a mass parameter forces Weyl semimetal undergo a quantum phase transition: from gapless to gapped.
+\subsection{オービフォールドとは}
+オービフォールド（Orbifold）とはorbitとmanifoldからできた言葉であり，
+を表した．
+大雑把にいって，オービフォールドとは局所的にEuclid空間の有限群による商群とみなせる多様体のことである．
 
-\section{Introduction}
-Semimetals have a Fermi surface with isolated points (Weyl points).
+\subsection{オービフォールドの意義}
 
-\section{Field Theory of Weyl semimetal}
-Weyl cones are usually rotationally symmetric and their opening angles are equal.
-\begin{equation}
-    \partial_\mu J_5^\mu
-    = \frac{1}{16\pi^2} \epsilon^{\mu\nu\rho\lambda} F_{\mu\nu} F_{\rho\lambda}
-    + 2M \bar{\Psi}\gamma_5 \Psi.
-\end{equation} % よくわからん
+\subsection{オービフォールドの応用}
+余剰次元への応用
+GHUシナリオにおいて，オービフォールドを余剰次元として採用することでCP対称性を破ることが可能．
 
-\section{Holographic Model}
-We consider the following holographic action:
+\section{基礎知識}
 
-\section{Numerical Calculation}
+\subsection{巡回群}
 
-\section{Conclusion}
+\subsection{\texorpdfstring{トーラス$T^2$}{トーラスT2}}
 
-\part{[1511.05505]}
-Quantum phase transition between a topological and a trivial semimetal from holography
 
-\part{[1604.01346]}
-Odd viscosity in the quantum critical region of a holographic Weyl semimetal
+\section{余剰次元}
 
-\part{Appendix}
-これについての基礎的知識を以下にまとめる．
 
-\section{Dirac半金属とWeyl半金属}
-エネルギー分散がどのように変化するかをDiracハミルトニアンから調べる．
+\section{コンパクト化}
 
-\subsection{スピン分裂したDirac電子}
-トポロジカル絶縁体の電子状態を記述する有効ハミルトニアンは
+\section{オービフォールド}
+
+\section{具体例}
+
+\subsection{\texorpdfstring{$S^1/\Zbb_2$}{S1/Z2}}
+最も簡単な1次元のオービフォールドの例である．
+ここで$\Zbb_2$とは$S^1$を$xy$平面上の原点を中心とする半径$R$の円としたときに，
+$x$軸に対して対称に折り返すという離散的変換を表している．
+$\Zbb_2 = \{ 1, -1\}$，$1$：恒等写像，$-1$：対称な折り返し．
+
+\subsection{\texorpdfstring{$\Cbb/\Zbb_N$}{C/ZN}}
+
+2次元の余剰次元として考えられるオービフォールドは，
+2つの余剰次元のどちらの方向にも円になっているトーラス$T^2$を$\Zbb_2, \Zbb_4$等で割ったものである．
+
+% CP violation
+オービフォールドは多様体をそれ自身のもつ離散対称性で割ったものとして定義される．
+（多様体の部分離散群による商群）
+
+
 
 \begin{thebibliography}{99}
 \bibitem{a} 文献情報
