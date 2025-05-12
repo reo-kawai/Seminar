@@ -1,8 +1,10 @@
 \RequirePackage{plautopatch} % パッチを自動的に適用してくれる
-\documentclass[uplatex]{jsarticle}
+\documentclass[dvipdfmx,uplatex]{jsarticle}
+% 主なパッケージたち ----------------------------------------------------------------------------------------------------------------
 
+\PassOptionsToPackage{dvipsnames}{xcolor}
+%\usepackage[dvipsnames]{xcolor} % 色の名前を拡張（dvipsnamesでないとRoyalBlueとかが通らない）
 \usepackage[dvipdfmx]{graphicx}
-\usepackage[dvipsnames]{xcolor} % 色の名前を拡張（dvipsnamesでないとRoyalBlueとかが通らない）
 
 % #################### Package for math ###########################
 % # amsmath : for complex math eqs. e.g. align, gather, etc...    #
@@ -16,8 +18,10 @@
 % #################################################################
 \usepackage{amsmath,amssymb,amsthm}% 数式関連のパッケージ
 \usepackage{mathtools}
+\usepackage{mathrsfs} % 花文字をいれる
 
 \setlength{\textwidth}{\fullwidth}  % 本文の幅(textwidth)を全体の幅(=ヘッダ部の幅)にそろえる
+\setlength{\evensidemargin}{\oddsidemargin} % 偶数ページの余白と奇数ページの余白をそろえる
 \usepackage{bm,amsfonts,ascmac,latexsym,physics,tikz,color}
 
 \usepackage{tcolorbox}
@@ -26,11 +30,23 @@
 \usepackage{titlesec}
 \usepackage{tocloft}
 
+
+% 余白の設定 ----------------------------------------------------------------------------------------------------------------
+
+\usepackage[margin=20truemm]{geometry}
+%\geometry{left=25mm,right=25mm,top=25mm,bottom=25mm}
+
 \usetikzlibrary{calc} % TikZのcalcライブラリを読み込む（TikZ描画の座標計算をサポート）
 \tcbuselibrary{raster,breakable,theorems,skins} % colorboxのライブラリを読み込む
+% raster: 格子状のレイアウトを作る。
+% breakable: 複数ページにまたがるボックスを作る。
+% theorems: 定理や命題などのスタイルを提供。
+% skins: ボックスの外観を柔軟にカスタマイズする。
+% breakableは重複してもエラーにならない
 
 
-% ハイパーリンク
+% ハイパーリンク ----------------------------------------------------------------------------------------------------------------
+
 \usepackage[
 dvipdfmx, % 日本語用ドライバを指定し日本語の文字列やリンクの処理を正しく行う
 %hypertexnames=false, % 参照リンクが正しく機能しない場合に使用するオプション（リンクの名前解決を無効化する）
@@ -44,10 +60,16 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
 %pdfauthor={},
 %pdfkeywords={} % 以上四つはPDFのプロパティ情報（PDFビューアで詳細情報として表示される）
 ]{hyperref}
+\hypersetup{
+    linkcolor=blue,        % 内部リンクの色
+    citecolor=blue,       % 引用リンクの色
+    urlcolor=magenta       % URLリンクの色
+}
+
 \usepackage{pxjahyper} % PDFのしおり機能の日本語文字化けを防ぐ((u)pLaTeXのときのみかく)
 
 
-%定理等環境----------------------------------------------------------------------------------------------------------------
+% 定理等環境 ----------------------------------------------------------------------------------------------------------------
 
 % 定理環境のカウンター
 \newcounter{theorem}
@@ -79,6 +101,14 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
         {\begin{theobox}[#2~\thetheorem：{#1}]}
 }{\end{theobox}}
 
+\newenvironment{req}[1][]{
+    \begin{theorem}[#1]{要請}{Red!50!WildStrawberry}{Apricot!20!White}{white}
+}{\end{theorem}}
+
+\newenvironment{ax}[1][]{
+    \begin{theorem}[#1]{公理}{Red!50!WildStrawberry}{Apricot!20!White}{white}
+}{\end{theorem}}
+
 \newenvironment{defn}[1][]{
     \begin{theorem}[#1]{定義}{OliveGreen}{ForestGreen!20!White}{white}
 }{\end{theorem}}
@@ -103,14 +133,24 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
     \begin{theorem}[#1]{Tips}{Yellow!40!Orange}{Yellow!20!White}{white}
 }{\end{theorem}}
 
+% 参照した色（\usepackage[dvipsnames]{xcolor}で定義）
+%colframe = RoyalBlue,
+%colback = RoyalBlue!10!White,
+%colframe = Yellow!40!Orange,
+%colback = Yellow!20!White,
+%colframe = OliveGreen,
+%colback = ForestGreen!20!White,
+%colframe = Maroon,
+%colback = Dandelion!20!Brown!10!White,
 
-%例環境
-\newcounter{reibangou} %%カウンタの定義
-%\numberwithin{reibangou}{section}
+
+% 例環境
+\newcounter{reibangou} % カウンタの定義
+\numberwithin{reibangou}{section}
 \newtcolorbox{rei}[1][]{
     enhanced,breakable,
     boxrule=0.5mm,
-    top=2pt,left=45pt,right=4pt,bottom=2pt, % 本文の配置
+    top=12pt,left=35pt,right=4pt,bottom=2pt, % 本文の配置 % 2, 45, 4, 2:defolt
     arc=0mm,
     colframe=blue!30!gray,
     boxrule=1pt,
@@ -118,9 +158,9 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
 }
 
 
-%例題環境
-\newcounter{reidaibangou} %%カウンタの定義
-%\numberwithin{reidaibangou}{section}
+% 例題環境
+\newcounter{reidaibangou} % カウンタの定義
+\numberwithin{reidaibangou}{section}
 \newtcolorbox{reidai}[1][]{
     enhanced,breakable,boxrule=0.5mm,
     top=2pt,left=50pt,right=4pt,bottom=2pt,
@@ -137,9 +177,9 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
 }
 
 
-%問題環境
+% 問題環境
 \newcounter{mondaibangou}
-%\numberwithin{mondaibangou}{chapter}
+\numberwithin{mondaibangou}{section}
 \newtcolorbox{mondai}[2][]{
     enhanced,breakable,sharp corners,
     colframe=blue!30!gray,
@@ -161,7 +201,23 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
 }
 
 
-% ==============================================================
+% マクロの定義 ----------------------------------------------------------------------------------------------------------------
+
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\ga}{\gamma}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\de}{\delta}
+\newcommand{\ep}{\epsilon}
+\newcommand{\Ht}{\mathcal{H}}
+\newcommand{\id}{\textrm{id}}
+\newcommand{\Lag}{\mathcal{L}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+
+
+% プリアンブルおわり ==============================================================
 
 \begin{document}
 
@@ -170,54 +226,203 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
 
 \maketitle
 
+\begin{center}
+    $\hat{A}$と$A$が混ざっています．ごめんね．
+\end{center}
+
 \section*{I.7 量子系の時間発展の記述}
 
-\subsection*{3. 相互作用表示（朝永--Dirac描像）}
+\subsection*{3. 相互作用表示（朝永--Dirac描像）
+\cite{日置qft}
+\cite{AitchisonI}
+}
 相互作用の寄与が小さく，自由状態にほとんど近いような場合の運動は\textbf{摂動（Perturbation）}計算で知ることができる．
 これに適した表示を導入しよう．
 
-時刻$t = t_0$において，Hamiltonianを
-\begin{equation}
-    H = H_0 + H_I
-\end{equation}
-と分ける．
 Schr\"{o}dinger描像では状態のみが（時刻$t = t_0$で量子化した量子状態$\ket{\Psi_0}$を用いて）
 \begin{equation}
     \ket{\Psi(t)}_\text{S} = e^{-i H (t - t_0)} \ket{\Psi_0}
+    \label{eq:Sch_pic}
 \end{equation}
 のように時間発展を担い，Heisenberg描像では演算子のみが（時刻$t = t_0$で量子化した演算子$Q(t_0)$を用いて）
 \begin{equation}
     Q_\text{H}(t) = e^{i H (t - t_0)} Q(t_0) e^{-i H (t - t_0)}
+    \label{eq:Hei_pic}
 \end{equation}
 と時間発展を担った．
 どちらで計算しても結果（確率振幅）は
 \begin{equation}
-    \mathcal{A}(\Psi_i \to \Psi_f)
-    = {}_\text{H}\bra{\Psi_f} \ket{\Psi_i}_\text{H}
-    = {}_\text{H}\bra{\Psi_f} \ket{\Psi_0}
-    = {}_\text{S}\bra{\Psi_f} e^{-i H (t_f - t_i)} \ket{\Psi_i}_\text{S}
-    = {}_\text{S}\bra{\Psi_f} e^{-i H (t_f - t_0)} \ket{\Psi_0}
+    \begin{split}
+        \mathcal{A}(\Psi_i \to \Psi_f)
+        &= {}_\text{H}\bra{\Psi_f} \ket{\Psi_i}_\text{H}
+        = {}_\text{H}\bra{\Psi_f} \ket{\Psi_0} \\
+        &= {}_\text{S}\bra{\Psi_f} \ket{\Psi(t_f)}_\text{S}
+        = {}_\text{S}\bra{\Psi_f} e^{-i H (t_f - t_i)} \ket{\Psi_i}_\text{S}
+        = {}_\text{S}\bra{\Psi_f} e^{-i H (t_f - t_0)} \ket{\Psi_0}
+    \end{split}
+    \label{eq:Amp}
 \end{equation}
 と不変であった．
 もちろんこれは（量子化した時刻における状態$\ket{\Psi_0}$から時間発展した後の）
 始状態$\ket{\Psi_i}$から系が時間発展して終状態$\ket{\Psi_f}$となるときの確率振幅を表している．
 
-ただこれらの表示は$H$の中に相互作用項$H_I$が含まれる場合，上手い表示ではない．
-演算子の時間依存性は全Hamiltonianで決定されるため，これが
+ただこれらの表示は$H$の中に相互作用項$H_\text{I}$が含まれる場合，上手い表示ではない．
+演算子の時間依存性は全Hamiltonianで決定されるため，これが自由場の場合と異なり不明
+（相互作用項の入れ方により様々）だからである．
 そこで
-
-
+\begin{equation}
+    \hat{H} \ket{\Psi(t)} = i \dv{t} \ket{\Psi(t)}
+    \label{eq:Sch_eq}
+    \footnote{このまま進めると，Lorentz不変で無くなるらしい\cite[p.128]{AitchisonI}．なぜ？}
+\end{equation}
+に立ち戻って考える．
+\begin{defn}[相互作用表示での時間発展]
+    時刻$t = t_0$において，Hamiltonianを
+    \begin{equation}
+        H = H_0 + H_\text{I}
+        \label{eq:free_int}
+    \end{equation}
+    と自由粒子のHamiltonian $H_0$と相互作用項$H'$に分ける．
+    このとき時間発展を
+    \begin{equation}
+        \begin{split}
+            A_\text{I} (t)
+            &= e^{i \hat{H}_0 (t-t_0)} A(t_0) e^{-i \hat{H}_0 (t-t_0)},\
+            i \pdv{A_\text{I} (t)}{t} = [A_\text{I} (t), H_0] \\
+            i \pdv{t} \ket{\Psi(t)}_\text{I}
+            &= \hat{H}'_\text{I}(t) \ket{\Psi(t)}_\text{I},\
+            \hat{H}'_\text{I} (t)
+            = e^{i \hat{H}_0 (t-t_0)} \hat{H}' e^{-i \hat{H}_0 (t-t_0)}
+        \end{split}
+        \label{eq:Int_pic}
+    \end{equation}
+    と表すことにする．
+\end{defn}
+もちろん状態は期待値が表示に依らないことから
 \begin{equation}
     \begin{split}
-        \mathcal{A}_\text{T} (\Psi_i \to \Psi_f)
-        &= {}_\text{T}\bra{\Psi_f}\ket{\Psi(t_f)}_\text{T} \\
-        &= {}_\text{T}\bra{\Psi_f} e^{i H_0 (t_f - t_0)} e^{-i H (t_f - t_i)} e^{-i H (t_i - t_0)} \ket{\Psi_i}_\text{T} \\
-        &= {}_\text{T}\bra{\Psi_f} e^{-i H_I (t_f - t_i)} \ket{\Psi_i}_\text{T}
+        {}_\text{I}\mel{\Phi(t)}{A_\text{I}(t)}{\Psi(t)}_\text{I}
+        &= {}_\text{S}\mel{\Phi(t)}{A(t_0)}{\Psi(t)}_\text{S} \\
+        &= {}_\text{S}\mel{\Phi(t)}{e^{-i \hat{H}_0 (t-t_0)} A_\text{I}(t) e^{i \hat{H}_0 (t-t_0)}}{\Psi(t)}_\text{S}
     \end{split}
 \end{equation}
+で比較して
+\begin{equation}
+    \ket{\Psi(t)}_\text{I} = e^{i \hat{H}_0 (t-t_0)} \ket{\Psi(t)}_\text{S}
+    = e^{i \hat{H}_0 (t-t_0)}e^{- i \hat{H} (t-t_0)} \ket{\Psi_0}．
+\end{equation}
+これを時間で微分すると
+\begin{equation}
+    \begin{split}
+        i \pdv{t} \ket{\Psi(t)}_\text{I}
+        &= - H_0 e^{i \hat{H}_0 (t-t_0)} \ket{\Psi(t)}_\text{S}
+        + e^{i \hat{H}_0 (t-t_0)} i \pdv{t} \ket{\Psi(t)}_\text{S} \\
+        &= - H_0 e^{i \hat{H}_0 (t-t_0)} \ket{\Psi(t)}_\text{S}
+        + e^{i \hat{H}_0 (t-t_0)} H \ket{\Psi(t)}_\text{S} \footnotemark \\
+        &= - H_0 e^{i \hat{H}_0 (t-t_0)} \ket{\Psi(t)}_\text{S}
+        + e^{i \hat{H}_0 (t-t_0)} (H_0 + H') \ket{\Psi(t)}_\text{S} \\
+        &= e^{i \hat{H}_0 (t-t_0)} H' e^{-i \hat{H}_0 (t-t_0)} \ket{\Psi(t)}_\text{I} \\
+    \end{split}
+\end{equation}
+\footnotetext{式\eqref{eq:Sch_eq}を使ったことに注意する．
+$\pdv{t}e^{- i \hat{H} (t-t_0)} = - i H e^{- i \hat{H} (t-t_0)}$はまずい気がしますが，どうでしょう？
+$\pdv{t} H = \pdv{t} H' \neq 0$では？}
+となって式\eqref{eq:Int_pic}の後者二式を満足する．相互作用の入った摂動計算で基本的な役割を果たす式である．
+
+
+このように演算子は自由Hamiltonian $H_0$による時間依存性をもつ．
+このとき自由粒子に対する展開がそのまま使え
+\footnote{自由粒子に対するHeisenberg描像の展開係数（生成消滅演算子）が，相互作用を入れたときも同様に使えることは大きな利点である．}
+，式\eqref{eq:Int_pic}の第一式を時間微分する
+\footnote{ただし$A$が$t$に陽に依存しないことを仮定する．}
+と第二式（自由粒子に対するHeisenbergの運動方程式）が得られることは明らかだろう．
+状態は相互作用項$H'$による時間依存性をもつ．
+つまり$H' \to 0$では自由粒子のHeisenberg描像になり，
+また相互作用表示は先の二表示の中間的な表示となっていることがわかる．
+これが，特に場の量子論における，摂動論と上手く適合する．
+
+この描像における始状態と終状態を構成しよう．
+もちろんHeisenberg描像と同様にして
+\begin{equation}
+    \begin{split}
+        \ket{\Psi_i}_\text{I}
+        &= a^\dag_\text{I} (\bm{p}_1, t_i) a^\dag_\text{I} (\bm{p}_2, t_i) \cdots a^\dag_\text{I} (\bm{p}_n, t_i) \ket{0} \\
+        \ket{\Psi_f}_\text{I}
+        &= a^\dag_\text{I} (\bm{p}_1, t_f) a^\dag_\text{I} (\bm{p}_2, t_f) \cdots a^\dag_\text{I} (\bm{p}_m, t_f) \ket{0} \\
+        a^\dag_\text{I} (\bm{k}, t)
+        &= e^{i \hat{H}_0 (t-t_0)} a^\dag (\bm{k}) e^{- i \hat{H}_0 (t-t_0)}
+    \end{split}
+\end{equation}
+とかける．そこで式\eqref{eq:Amp}の確率振幅$\mathcal{A} (\Psi_i \to \Psi_f)$を考えると
+\begin{equation}
+    \begin{split}
+        \mathcal{A}_\text{I} (\Psi_i \to \Psi_f)
+        &= {}_\text{I}\bra{\Psi_f}\ket{\Psi(t_f)}_\text{I} \\
+        &= {}_\text{I}\bra{\Psi_f} e^{i H_0 (t_f - t_0)} \ket{\Psi(t_f)}_\text{S} \\
+        &= {}_\text{I}\bra{\Psi_f} e^{i H_0 (t_f - t_0)} e^{-i H (t_f - t_i)} \ket{\Psi(t_i)}_\text{S} \\
+        &= {}_\text{I}\bra{\Psi_f} e^{i H_0 (t_f - t_0)} e^{-i H (t_f - t_i)} e^{-i H_0 (t_i - t_0)} \ket{\Psi_i}_\text{I} \\
+        &= {}_\text{S}\bra{\Psi_f} e^{-i H (t_f - t_i)} \ket{\Psi_i}_\text{S} \\
+        &= \mathcal{A} (\Psi_i \to \Psi_f)
+    \end{split}
+\end{equation}
+となり，やはり表示に依らないことがわかる．
+
+生成消滅演算子の時間発展をみてみよう．
+\begin{equation}
+    \begin{split}
+        a^{(\dag)}_\text{I} (\bm{k}, t)
+        = e^{i H_0 (t - t_0)} a^{(\dag)} (\bm{k}) e^{- i H_0 (t - t_0)}
+        = a^{(\dag)} (\bm{k}) e^{\pm i k^0 ( t - t_0 )}
+        \sim a^{(\dag)} (\bm{k})
+    \end{split}
+\end{equation}
+位相差は確率振幅の二乗には寄与しないから$a^{(\dag)}_\text{I} (\bm{k}, t)$と$ a^{(\dag)} (\bm{k})$は同じ演算子として扱う．
+これより場も
+\begin{equation}
+    \phi_{\text{I}}(x)
+        =\int d^3 \tilde{\bm{k}}\left[a_{\text{I}}(\bm{k}, t) e^{-ikx} + a_{\text{I}}^\dag(\bm{k}, t) e^{ikx}\right]_{x^0=t_0}
+        =\int d^3 \tilde{\bm{k}}\left[a(\bm{k}) e^{-ikx} + a^\dag (\bm{k}) e^{ikx}\right]
+\end{equation}
+とかける．
+\begin{rmk}
+    Hamiltonianの相互作用項は明らかに自由粒子に対するHeisenberg表示の演算子だけでかける.
+\end{rmk}
+
 
 \subsection*{三つの表示の比較}
 三つの法事における時間発展の記述について比較してみる．
+
+\subsubsection*{Schr\"{o}dinger描像}
+状態を構成するために用いられる演算子は時刻に対して不変であり，
+時刻$t = t'$における量子状態$\ket{\psi(t')}$を構成した後はSchr\"{o}dinger方程式に従って系の状態が時間発展する．
+
+\subsubsection*{Heisenberg描像}
+各時刻$t = t'$における量子状態$\ket{\psi(t')}$は時刻$t$が変化しても変わることはなく，$\ket{\psi(t')}$のままである．
+ただし（観測・比較するために）新たな時刻$t = t''$で状態を構成するために用いられる演算子は
+$a^\dag(t'') \neq a^\dag(t')$と変化している．ただし$a^\dag(t')$とは$t = t'$で状態構成に用いた演算子である．
+
+\subsubsection*{相互作用表示}
+
+\clearpage
+\begin{tips}[各表示における場と確率振幅]
+    aaaa
+    \begin{equation}
+        \begin{split}
+        \phi_{\text{S}}(\bm{x})
+        &=\phi_0(\bm{x})
+        =\int d^3 \tilde{\bm{k}} \left[ a(\bm{k}) e^{-ikx} + a^\dag (\bm{k}) e^{ikx} \right]_{x^0 = t_0} \\
+        \phi_{\text{H}}(x)
+        &= \int d^3 \tilde{\bm{k}} \left[ a_{\text{H}} (\bm{k}, t) e^{-ikx} + a_{\text{H}}^\dag (\bm{k}, t) e^{ikx} \right]_{x^0=t_0} \\
+        a_{\text{H}}^{(\dag)}(\bm{k}, t)
+        & =e^{i H (t-t_0)} a^{(\dag)}(\bm{k}) e^{-i H(t-t_0)} \\
+        \phi_{\text{I}}(x)
+        & =\int d^3 \tilde{\bm{k}}\left[a_{\text{I}}(\bm{k}, t) e^{-ikx} + a_{\text{I}}^\dag(\bm{k}, t) e^{ikx}\right]_{x^0=t_0}
+        =\int d^3 \tilde{\bm{k}}\left[a(\bm{k}) e^{-ikx} + a^\dag (\bm{k}) e^{ikx}\right] \\
+        a^{(\dag)}_\text{I} (\bm{k}, t)
+        &= e^{i H_0 (t - t_0)} a^{(\dag)} e^{- i H_0 (t - t_0)}
+    \end{split}
+\end{equation}
+\end{tips}
 
 \section*{II.1 摂動論で計算する量}
 素粒子現象では主に散乱（scattering），衝突（collision）の過程と束縛状態（bound state）を取り扱う．
@@ -235,13 +440,14 @@ I.6では$t \to \pm \infty$で相互作用が消えるという条件を仮定�
 \end{equation}
 などを計算すればよい．
 
-\section*{散乱理論}
+\section*{散乱理論\cite{佐藤SGC}}
 ここでは散乱理論，特に散乱による状態の遷移を表すS(cattering)行列の理論についてに記述する．
 多くの粒子からなる散乱過程は複雑であり，特にその中間状態をいちいち特定して計算するのは骨が折れる．
 そこで散乱による始状態から終状態の遷移を行列の形でまとめて記述する．
 これをS行列とよぶ．
 
-ハミルトニアンを
+\subsection*{量子力学におけるS行列}
+Hamiltonianを
 \begin{equation}
     H = H_0 + V(x),\ H_0 = \frac{\hat{p}^2}{2m}
 \end{equation}
@@ -257,7 +463,7 @@ I.6では$t \to \pm \infty$で相互作用が消えるという条件を仮定�
 \begin{equation}
     \psi_k (x, t) = e^{-iE_k t} \psi_k (x)
 \end{equation}
-とかけて，$\psi_k$は$k>0$で$x$正方向に伝播する平面波，$k<0$で$x$負方向に伝播する平面波を表す．
+とかけて，$\psi_k$は$k>0$で$x$正方向，$k<0$で$x$負方向に伝播する平面波を表す．
 
 $|x| > x_0$では$V(x)=0$なので，この領域でSchr\"{o}dinger方程式の解は
 \begin{equation}
@@ -268,7 +474,24 @@ $|x| > x_0$では$V(x)=0$なので，この領域でSchr\"{o}dinger方程式の�
     \end{cases}
 \end{equation}
 $(k>0)$とかける．
-
+$A e^{ikx}, D e^{-ikx}$で表される自由粒子がポテンシャルで散乱され，
+$B e^{-ikx}, C e^{ikx}$で表される自由粒子として遠方へ向かう．
+$t \to \pm \infty$で粒子はポテンシャルの影響を受けない定常状態にあるはずだから，
+その基底を$e^{\pm i k x}$とすると，この散乱過程は
+$散乱前の状態(A, D) \to 散乱後の状態(B, C)$という状態の遷移で記述される．
+これを
+\begin{equation}
+    \begin{pmatrix}
+        C \\
+        B
+    \end{pmatrix}
+    = S
+    \begin{pmatrix}
+        A \\
+        D
+    \end{pmatrix}
+\end{equation}
+と表した時の行列$S$がS行列となる．もちろんS行列はユニタリ行列である．
 
 \section*{II.2 場の理論でのS行列}
 
@@ -281,10 +504,7 @@ Weyl cones are usually rotationally symmetric and their opening angles are equal
     + 2M \bar{\Psi}\gamma_5 \Psi.
 \end{equation} % よくわからん
 
-
-\begin{thebibliography}{99}
-\bibitem{a} 文献情報
-\bibitem{b} 文献情報
-\end{thebibliography}
+\bibliography{5_13}
+\bibliographystyle{junsrt}
 
 \end{document}

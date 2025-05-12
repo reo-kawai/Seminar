@@ -1,8 +1,10 @@
 \RequirePackage{plautopatch} % パッチを自動的に適用してくれる
-\documentclass[uplatex]{jsarticle}
+\documentclass[dvipdfmx,uplatex]{jsarticle}
+% 主なパッケージたち ----------------------------------------------------------------------------------------------------------------
 
+\PassOptionsToPackage{dvipsnames}{xcolor}
+%\usepackage[dvipsnames]{xcolor} % 色の名前を拡張（dvipsnamesでないとRoyalBlueとかが通らない）
 \usepackage[dvipdfmx]{graphicx}
-\usepackage[dvipsnames]{xcolor} % 色の名前を拡張（dvipsnamesでないとRoyalBlueとかが通らない）
 
 % #################### Package for math ###########################
 % # amsmath : for complex math eqs. e.g. align, gather, etc...    #
@@ -16,8 +18,10 @@
 % #################################################################
 \usepackage{amsmath,amssymb,amsthm}% 数式関連のパッケージ
 \usepackage{mathtools}
+\usepackage{mathrsfs} % 花文字をいれる
 
 \setlength{\textwidth}{\fullwidth}  % 本文の幅(textwidth)を全体の幅(=ヘッダ部の幅)にそろえる
+\setlength{\evensidemargin}{\oddsidemargin} % 偶数ページの余白と奇数ページの余白をそろえる
 \usepackage{bm,amsfonts,ascmac,latexsym,physics,tikz,color}
 
 \usepackage{tcolorbox}
@@ -26,11 +30,23 @@
 \usepackage{titlesec}
 \usepackage{tocloft}
 
+
+% 余白の設定 ----------------------------------------------------------------------------------------------------------------
+
+\usepackage[margin=20truemm]{geometry}
+%\geometry{left=25mm,right=25mm,top=25mm,bottom=25mm}
+
 \usetikzlibrary{calc} % TikZのcalcライブラリを読み込む（TikZ描画の座標計算をサポート）
 \tcbuselibrary{raster,breakable,theorems,skins} % colorboxのライブラリを読み込む
+% raster: 格子状のレイアウトを作る。
+% breakable: 複数ページにまたがるボックスを作る。
+% theorems: 定理や命題などのスタイルを提供。
+% skins: ボックスの外観を柔軟にカスタマイズする。
+% breakableは重複してもエラーにならない
 
 
-% ハイパーリンク
+% ハイパーリンク ----------------------------------------------------------------------------------------------------------------
+
 \usepackage[
 dvipdfmx, % 日本語用ドライバを指定し日本語の文字列やリンクの処理を正しく行う
 %hypertexnames=false, % 参照リンクが正しく機能しない場合に使用するオプション（リンクの名前解決を無効化する）
@@ -44,10 +60,16 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
 %pdfauthor={},
 %pdfkeywords={} % 以上四つはPDFのプロパティ情報（PDFビューアで詳細情報として表示される）
 ]{hyperref}
+\hypersetup{
+    linkcolor=blue,        % 内部リンクの色
+    citecolor=blue,       % 引用リンクの色
+    urlcolor=magenta       % URLリンクの色
+}
+
 \usepackage{pxjahyper} % PDFのしおり機能の日本語文字化けを防ぐ((u)pLaTeXのときのみかく)
 
 
-%定理等環境----------------------------------------------------------------------------------------------------------------
+% 定理等環境 ----------------------------------------------------------------------------------------------------------------
 
 % 定理環境のカウンター
 \newcounter{theorem}
@@ -79,6 +101,14 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
         {\begin{theobox}[#2~\thetheorem：{#1}]}
 }{\end{theobox}}
 
+\newenvironment{req}[1][]{
+    \begin{theorem}[#1]{要請}{Red!50!WildStrawberry}{Apricot!20!White}{white}
+}{\end{theorem}}
+
+\newenvironment{ax}[1][]{
+    \begin{theorem}[#1]{公理}{Red!50!WildStrawberry}{Apricot!20!White}{white}
+}{\end{theorem}}
+
 \newenvironment{defn}[1][]{
     \begin{theorem}[#1]{定義}{OliveGreen}{ForestGreen!20!White}{white}
 }{\end{theorem}}
@@ -103,14 +133,24 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
     \begin{theorem}[#1]{Tips}{Yellow!40!Orange}{Yellow!20!White}{white}
 }{\end{theorem}}
 
+% 参照した色（\usepackage[dvipsnames]{xcolor}で定義）
+%colframe = RoyalBlue,
+%colback = RoyalBlue!10!White,
+%colframe = Yellow!40!Orange,
+%colback = Yellow!20!White,
+%colframe = OliveGreen,
+%colback = ForestGreen!20!White,
+%colframe = Maroon,
+%colback = Dandelion!20!Brown!10!White,
 
-%例環境
-\newcounter{reibangou} %%カウンタの定義
-%\numberwithin{reibangou}{section}
+
+% 例環境
+\newcounter{reibangou} % カウンタの定義
+\numberwithin{reibangou}{section}
 \newtcolorbox{rei}[1][]{
     enhanced,breakable,
     boxrule=0.5mm,
-    top=2pt,left=45pt,right=4pt,bottom=2pt, % 本文の配置
+    top=12pt,left=35pt,right=4pt,bottom=2pt, % 本文の配置 % 2, 45, 4, 2:defolt
     arc=0mm,
     colframe=blue!30!gray,
     boxrule=1pt,
@@ -118,9 +158,9 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
 }
 
 
-%例題環境
-\newcounter{reidaibangou} %%カウンタの定義
-%\numberwithin{reidaibangou}{section}
+% 例題環境
+\newcounter{reidaibangou} % カウンタの定義
+\numberwithin{reidaibangou}{section}
 \newtcolorbox{reidai}[1][]{
     enhanced,breakable,boxrule=0.5mm,
     top=2pt,left=50pt,right=4pt,bottom=2pt,
@@ -137,9 +177,9 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
 }
 
 
-%問題環境
+% 問題環境
 \newcounter{mondaibangou}
-%\numberwithin{mondaibangou}{chapter}
+\numberwithin{mondaibangou}{section}
 \newtcolorbox{mondai}[2][]{
     enhanced,breakable,sharp corners,
     colframe=blue!30!gray,
@@ -176,8 +216,7 @@ colorlinks=true, % ハイパーリンクされているテキストに色がつ�
 \newcommand{\Rbb}{\mathbb{R}}
 \newcommand{\Zbb}{\mathbb{Z}}
 
-
-% ==============================================================
+% プリアンブルおわり ==============================================================
 
 \begin{document}
 
@@ -232,11 +271,9 @@ $\Zbb_2 = \{ 1, -1\}$，$1$：恒等写像，$-1$：対称な折り返し．
 オービフォールドは多様体をそれ自身のもつ離散対称性で割ったものとして定義される．
 （多様体の部分離散群による商群）
 
+\cite{日置qft}
 
-
-\begin{thebibliography}{99}
-\bibitem{a} 文献情報
-\bibitem{b} 文献情報
-\end{thebibliography}
+\bibliography{orbiforld}
+\bibliographystyle{junsrt}
 
 \end{document}
