@@ -403,9 +403,10 @@ $a^\dag(t'') \neq a^\dag(t')$と変化している．ただし$a^\dag(t')$とは
 
 \subsubsection*{相互作用表示}
 
+
 \clearpage
 \begin{tips}[各表示における場と確率振幅]
-    aaaa
+    場の演算子
     \begin{equation}
         \begin{split}
         \phi_{\text{S}}(\bm{x})
@@ -420,8 +421,34 @@ $a^\dag(t'') \neq a^\dag(t')$と変化している．ただし$a^\dag(t')$とは
         =\int d^3 \tilde{\bm{k}}\left[a(\bm{k}) e^{-ikx} + a^\dag (\bm{k}) e^{ikx}\right] \\
         a^{(\dag)}_\text{I} (\bm{k}, t)
         &= e^{i H_0 (t - t_0)} a^{(\dag)} e^{- i H_0 (t - t_0)}
-    \end{split}
-\end{equation}
+        \end{split}
+    \end{equation}
+
+    確率振幅
+    \begin{equation}
+        \begin{split}
+            \mathcal{A}_\text{S} (\Psi_i \to \Psi_f)
+            &= {}_\text{S}\bra{\Psi_f} \ket{\Psi(t_f)}_\text{S}
+            = {}_\text{S}\bra{\Psi_f} e^{-i H (t_f - t_i)} \ket{\Psi_i}_\text{S} \\
+            \mathcal{A}_\text{H} (\Psi_i \to \Psi_f)
+            &= {}_\text{H}\bra{\Psi_f} \ket{\Psi_i}_\text{H} \\
+            \mathcal{A}_\text{I} (\Psi_i \to \Psi_f)
+            &= {}_\text{I}\bra{\Psi_f}\ket{\Psi(t_f)}_\text{I} \\
+            &= {}_\text{I}\bra{\Psi_f} e^{i H_0 (t_f - t_0)} e^{-i H (t_f - t_i)} e^{-i H_0 (t_i - t_0)} \ket{\Psi_i}_\text{I}
+        \end{split}
+    \end{equation}
+
+    量子状態
+    \begin{equation}
+        \begin{split}
+            & \ket{\Psi_i}_\text{S}
+            = a^\dag (\bm{p}_1) a^\dag (\bm{p}_2) \cdots a^\dag (\bm{p}_n) \ket{0} \\
+            & \ket{\Psi_i}_\text{H}
+            = a^\dag_\text{H} (\bm{p}_1, t_i) a^\dag_\text{H} (\bm{p}_2, t_i) \cdots a^\dag_\text{H} (\bm{p}_n, t_i) \ket{0} \\
+            & \ket{\Psi_i}_\text{I}
+            = a^\dag_\text{I} (\bm{p}_1, t_i) a^\dag_\text{I} (\bm{p}_2, t_i) \cdots a^\dag_\text{I} (\bm{p}_n, t_i) \ket{0} \\
+        \end{split}
+    \end{equation}
 \end{tips}
 
 \section*{II.1 摂動論で計算する量}
